@@ -4,33 +4,35 @@ Mora Food is a responsive front-end food application developed using HTML, CSS, 
 
 🚀 Features
 
-🏠 Home page with smooth navigation
+    🏠 Home page with smooth navigation
 
-🍴 Restaurant & Home Chef listings (UI)
+    🍴 Restaurant & Home Chef listings (UI)
 
-⭐ Favorites and Order History pages
+    ⭐ Favorites and Order History pages
 
-⚙️ User Settings & Profile management
+    ⚙️ User Settings & Profile management
 
-🔔 Notification preferences (Email, SMS, App)
+    🔔 Notification preferences (Email, SMS, App)
 
-🖼️ Profile image upload & preview
+    🖼️ Profile image upload & preview
 
-💾 LocalStorage support for saving user data
+    💾 LocalStorage support for saving user data
 
-📱 Fully responsive design (Desktop & Mobile)
+    📱 Fully responsive design (Desktop & Mobile)
 
 🛠️ Technologies Used
 
-HTML5 – Structure
+    -HTML5 – Structure
 
-CSS3 – Styling & responsiveness
+    -CSS3 – Styling & responsiveness
 
-JavaScript (Vanilla JS) – Interactivity & LocalStorage
+    -JavaScript (Vanilla JS) – Interactivity & LocalStorage
 
-Font Awesome – Icons
+    -Bootstrap
 
-Google Fonts – Custom typography
+    -Font Awesome – Icons
+
+    -Google Fonts – Custom typography
 
 📂 Project Type
 
@@ -42,7 +44,7 @@ Suitable for UI/UX demonstration and practice
 
 🎯 Purpose
 
-This project is created to demonstrate front-end development skills, including layout design, responsive UI, DOM manipulation, and basic client-side data handling.
+    This project is created to demonstrate front-end development skills, including layout design, responsive UI, DOM manipulation, and basic client-side data handling.
 It can be extended in the future with backend technologies such as PHP, Node.js, and databases like MySQL.
 
 ▶️ How to Run the Project
