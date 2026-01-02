@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mora Food</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Irish+Grover&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: hsl(0, 0%, 98%);
+      font-family: "Alan Sans", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      font-family: "Irish Grover", cursive;
+      font-weight: 400;
+      color: #ee670c;
+      margin-left: 20px;
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background-color: #fff;
+      padding: 10px 30px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: black;
+      font-size: 18px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+
+    .search {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      border: 1px solid #444;
+      border-radius: 20px;
+      padding: 5px 10px;
+    }
+
+    .search input {
+      border: none;
+      outline: none;
+      background: none;
+      font-size: 16px;
+      margin-left: 5px;
+      width: 180px;
+    }
+
+    /* Slideshow */
+    .slideshow-container {
+      margin-top: 100px;
+      position: relative;
+      width: 100%;
+      height: 90vh;
+      overflow: hidden;
+    }
+
+    .mySlides {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .mySlides img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      vertical-align: middle;
+    }
+
+    .fade {
+      animation-name: fade;
+      animation-duration: 1.5s;
+    }
+
+    @keyframes fade {
+      from {opacity: 0.4} 
+      to {opacity: 1}
+    }
+
+    /* Order Box */
+    .order-box {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      width: 600px;
+      max-width: 90%;
+      animation: floatIn 1.5s ease forwards;
+    }
+
+    .order-box p {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      text-align: center;
+      flex: 1;
+      animation: textPop 1.8s ease;
+    }
+
+    .order-box button {
+      background: linear-gradient(45deg, #ee670c, #ff9f2e);
+      color: white;
+      padding: 12px 30px;
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(238,103,12,0.4);
+    }
+
+    .order-box button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.3);
+      transition: left 0.4s ease;
+    }
+
+    .order-box button:hover::before {
+      left: 100%;
+    }
+
+    .order-box button:hover {
+      transform: scale(1.08);
+      background: linear-gradient(45deg, #ff9f2e, #ee670c);
+    }
+
+    @keyframes floatIn {
+      0% { transform: translate(-50%, 80px); opacity: 0; }
+      100% { transform: translate(-50%, 0); opacity: 1; }
+    }
+
+    @keyframes textPop {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Dots */
+    .dots {
+      text-align: center;
+      margin: 20px 0 50px 0;
+    }
+
+    .dot {
+      height: 12px;
+      width: 12px;
+      margin: 0 5px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.4s ease;
+      cursor: pointer;
+    }
+
+    .active {
+      background-color: #ee670c;
+    }
+
+    .download-prompt {
+      text-align: center;
+      font-size: 25px;
+      margin: 30px 20px 50px;
+      color: #333;
+    }
+
+    /* Login Section */
+    .login-section {
+      background: white;
+      width: 80%;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .login-section h2 {
+      color: #ee670c;
+      margin-bottom: 20px;
+    }
+
+    .login-section input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .login-section button {
+      background: linear-gradient(45deg, #ee670c, #ff9f2e);
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .login-section button:hover {
+      transform: scale(1.05);
+    }
+
+    .login-section p {
+      font-size: 15px;
+      margin-top: 15px;
+    }
+
+    .login-section a {
+      color: #ee670c;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Why Choose Us */
+    .why {
+      text-align: center;
+      padding: 50px 20px;
+      background: #91d9f6;
+    }
+
+    .why h2 {
+      color: #89324b;
+      margin-bottom: 30px;
+    }
+
+    .why .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .why .feature {
+      width: 250px;
+      padding: 20px;
+      border-radius: 15px;
+      background: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .why .feature:hover {
+      transform: translateY(-5px);
+    }
+
+    .why .feature i {
+      font-size: 40px;
+      color: #eec34c;
+      margin-bottom: 15px;
+    }
+
+    .why .feature h3 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    /* Reviews Section */
+    .reviews {
+      text-align: center;
+      background: #fff;
+      padding: 50px 20px;
+    }
+
+    .reviews h2 {
+      color: #328952;
+      margin-bottom: 20px;
+    }
+
+    .review {
+      font-size: 18px;
+      color: #555;
+      margin: 10px 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .reviewer {
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* App Section */
+    .app-section {
+      text-align: center;
+      padding: 50px 20px;
+      background: #fff7f1;
+    }
+
+    .app-section h2 {
+      color: #594b4f;
+      margin-bottom: 10px;
+    }
+
+    .app-section img {
+      width: 180px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      background: #333;
+      color: white;
+      padding: 20px;
+      margin-top: 50px;
+    }
+
+    .social-icons i {
+      margin: 0 10px;
+      cursor: pointer;
+      font-size: 20px;
+      transition: color 0.3s;
+    }
+
+    .social-icons i:hover {
+      color: #8656c8;
+    }
+
+    @media (max-width: 768px) {
+      .order-box {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+      }
+   h1{ font-size:20px; margin-top:25px; } h2{ font-size:20px;} .nav{flex-wrap:wrap; gap:5px; padding:10px 5px;} .nav a{font-size:15px;margin-left:10px;}
+      .order-box p {
+        font-size: 16px;
+      }
+
+      .order-box button {
+        margin-top: 10px;
+        font-size: 16px;
+        padding: 10px 25px;
+      }
+
+      .why .features {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .search input {
+        width: 120px;
+      }
+    }
+      @media (max-width:480px){ .sidebar{display:none;} .content{margin:100px 20px; padding:20px;} .category-list{grid-template-columns:repeat(2,1fr); display:grid; gap:15px;} .category-item{width:100%;} .download-prompt{font-size:small;} }
+
+  </style>
+</head>
+
+<body>
+  <nav class="nav">
+    <h1>Mora Food</h1>
+    <a href="">Home</a>
+    <a href="">Restaurants</a>
+    <a href="">Home Chefs</a>
+    <a href="">Offers</a>
+    <a href="">About</a>
+
+    <div class="search">
+      <i class="fa fa-search"></i>
+      <input type="text" placeholder="What do you want to eat today...">
+    </div>
+  </nav>
+
+  <main>
+    <div class="slideshow-container">
+      <div class="mySlides fade">
+        <img src="Img/MORA Food.png" alt="Mora Food Banner">
+      </div>
+      <div class="mySlides fade">
+        <img src="Img/pic 2.png" alt="Mora Food Ad">
+      </div>
+      <div class="mySlides fade">
+        <img src="Img/ads.png" alt="Mora Food Offer">
+      </div>
+
+      <div class="order-box">
+        <p>LET'S ORDER FOR DELIVERY, PICK UP, OR DINE-IN</p>
+        <button onclick="location.href='Main.html'">Order Now</button>
+      </div>
+    </div>
+
+    <div class="dots">
+      <span class="dot"></span> 
+      <span class="dot"></span> 
+      <span class="dot"></span> 
+    </div>
+
+    <h2 class="download-prompt">For a better experience, download the Mora app now</h2>
+
+    <!-- Login Section -->
+    <div class="login-section">
+      <h2>Login to Your Account</h2>
+      <input type="text" placeholder="Enter your email or username"><br>
+      <input type="password" placeholder="Enter your password"><br>
+      <button>Login</button>
+      <p>Don't have an account? <a href="#">Sign Up</a></p>
+      <p><a href="#">Forgot Password?</a></p>
+    </div>
+
+    <!-- Why Choose Us -->
+    <section class="why">
+      <h2>Why Choose Mora Food?</h2>
+      <div class="features">
+        <div class="feature">
+          <i class="fa fa-cutlery"></i>
+          <h3>Delicious Variety</h3>
+          <p>Choose from thousands of dishes across your favorite cuisines.</p>
+        </div>
+        <div class="feature">
+          <i class="fa fa-bicycle"></i>
+          <h3>Fast Delivery</h3>
+          <p>Get your food delivered hot and fresh, right to your doorstep.</p>
+        </div>
+        <div class="feature">
+          <i class="fa fa-star"></i>
+          <h3>Top Rated Chefs</h3>
+          <p>Enjoy meals prepared by professional and verified chefs.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="reviews">
+      <h2>What Our Customers Say</h2>
+      <div id="reviewText" class="review">"The food is amazing and always on time!"</div>
+      <div id="reviewer" class="reviewer">– Priya S.</div>
+    </section>
+
+    <!-- App Download -->
+    <section class="app-section">
+      <h2>Download the Mora Food App</h2>
+      <p>Order your favorites anytime, anywhere!</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/640px-Download_on_the_App_Store_Badge.svg.png" alt="App Store">
+    </section>
+  </main>
+
+  <footer>
+    <div class="social-icons">
+      <i class="fa fa-facebook"></i>
+      <i class="fa fa-instagram"></i>
+      <i class="fa fa-twitter"></i>
+      <i class="fa fa-envelope"></i>
+    </div>
+    <p>© 2025 Mora Food | All Rights Reserved</p>
+  </footer>
+
+  <script>
+    let slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+      const slides = document.getElementsByClassName("mySlides");
+      const dots = document.getElementsByClassName("dot");
+      for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
+      slideIndex++;
+      if (slideIndex > slides.length) slideIndex = 1;
+      for (let i = 0; i < dots.length; i++) dots[i].classList.remove("active");
+      slides[slideIndex - 1].style.display = "block";
+      dots[slideIndex - 1].classList.add("active");
+      setTimeout(showSlides, 3000);
+    }
+
+    const reviews = [
+      { text: '"The food is amazing and always on time!"', name: "– Priya S." },
+      { text: '"Loved the variety and quick delivery!"', name: "– Rahul M." },
+      { text: '"Affordable, tasty, and great service!"', name: "– Ananya D." }
+    ];
+
+    let rIndex = 0;
+    setInterval(() => {
+      rIndex = (rIndex + 1) % reviews.length;
+      document.getElementById("reviewText").innerText = reviews[rIndex].text;
+      document.getElementById("reviewer").innerText = reviews[rIndex].name;
+    }, 4000);
+  </script>
+</body>
+</html>

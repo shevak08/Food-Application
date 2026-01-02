@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mora Food</title>
+
+<!-- Font Awesome --> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Irish+Grover&display=swap" rel="stylesheet" />
+
+<style>
+  body { background-color: hsl(0, 0%, 98%); font-family: "Alan Sans", sans-serif; overflow-x: hidden; margin: 0; }
+  h1 { font-family: "Irish Grover", cursive; font-weight: 400; color: #ee670c; margin-left: 20px; cursor: pointer; }
+  .nav { display: flex; align-items: center; gap: 20px; background-color: white; padding: 10px 30px; position: fixed; top: 0; left: 0; right: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10; }
+  .nav a { text-decoration: none; color: black; font-size: 18px; padding: 10px 15px; border-radius: 5px; transition: background-color 0.3s; }
+  .nav a:hover { background-color: #f0f0f0; }
+  .search { margin-left: auto; display: flex; align-items: center; border: 1px solid #444; border-radius: 20px; padding: 5px 10px; }
+  .search input { border: none; outline: none; background: none; font-size: 16px; margin-left: 5px; }
+
+  .title-p { margin: 15px 30px; font-size: large; white-space: nowrap; overflow: hidden; }
+  .title-p p { display: inline-block; animation: moveText 15s linear infinite; }
+  @keyframes moveText { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+
+  .sidebar { position: fixed; top: 120px; left: 20px; bottom: 60px; width: 220px; background-color: #ffed26; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); padding: 20px; }
+  .sidebar h3 { margin: 0 0 20px 50px; }
+  .sidebar ul { list-style: none; padding: 0; margin: 0; }
+  .sidebar li { margin: 10px 0; }
+  .sidebar a { text-decoration: none; color: #151506; font-size: 18px; display: block; padding: 8px 15px; border-radius: 10px; transition: background-color 0.3s; }
+  .sidebar a:hover { background-color: #cad315; }
+  .chef img { width: 150px; border-radius: 10px; margin: 25px auto 10px; display: block; }
+
+  .content { margin-left: 280px; padding: 120px 40px; animation: fadeIn 1s ease-in-out; }
+  .content h4 { font-size: 22px; margin-top: -10px; color: #0a0a0aef; }
+  .category { margin-top: 20px; }
+  .category h2 { font-size: 22px; color: #0a0a0a; }
+  .category-list { display: flex; flex-wrap: wrap; gap: 40px; margin-top: 20px; }
+
+  .food-scroll { display: flex; overflow-x: auto; gap: 20px; padding: 10px 0; margin: 20px 0; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; }
+  .food-scroll::-webkit-scrollbar { display: none; }
+  .food-item { flex: 0 0 auto; text-align: center; scroll-snap-align: start; background: white; border-radius: 10px; padding: 10px; box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
+  .food-item img { width: 100px; height: 70px; object-fit: cover; border-radius: 10px; }
+  .food-item p { font-size: 16px; font-weight: 500; margin: 5px 0; }
+  .favorite { cursor: pointer; font-size: 20px; color: #ccc; margin-left: 5px; transition: color 0.3s; }
+  .favorite.active { color: red; }
+
+  .category-item { background: white; border-radius: 16px; padding: 10px; box-shadow: 0 12px 18px rgba(0,0,0,0.1); width: 200px; text-align: center; opacity: 0; transform: translateY(40px); animation: slideUp 0.8s forwards; }
+  .category-item:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 15px 25px rgba(238,212,12,0.3); transition: all 0.4s ease; }
+  .category-item img { width: 100%; height: 150px; border-radius: 10px; margin-bottom: 10px; transition: transform 0.3s ease; }
+  .category-item:hover img { transform: scale(1.05); }
+  .category-item p { font-weight: 600; font-size: 18px; margin: 5px 0; color: #000; }
+  .price { color: green; font-weight: bold; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .download-prompt { text-align: center; font-size: large; margin-bottom: 30px; }
+
+  .cart-box { position: fixed; top:140px; right:20px; width:250px; background:white; border-radius:15px; padding:15px; box-shadow:0 6px 18px rgba(0,0,0,0.15); }
+  .cart-items{ max-height:200px; overflow-y:auto; font-size:14px; }
+  .cart-item{ display:flex; justify-content:space-between; margin-bottom:6px; }
+  .cart-total{ margin-top:10px; font-weight:bold; border-top:1px solid #ccc; padding-top:8px; }
+  .add-btn{ background:#ee670c; border:none; color:white; padding:6px 10px; border-radius:8px; cursor:pointer; }
+  .add-btn:hover{ background:#66ce1c; }
+  #cartBox { display: none; }
+  #confirmBtn {
+  background-color: #28a745; /* Green color */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  width: 100%;
+}
+
+#confirmBtn:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+
+  @media (max-width:865px){ h1{ font-size:20px; margin-top:25px; } .nav{flex-wrap:wrap; gap:5px; padding:10px 5px;} .nav a{font-size:15px;margin-left:10px;} .sidebar{top:125px; left:8px;width:160px;} .content{margin-left:195px;padding:100px 20px;} .category-list{justify-content:center; gap:20px;} }
+  @media (max-width:480px){ .sidebar{display:none;} .content{margin:100px 20px; padding:20px;} .category-list{grid-template-columns:repeat(2,1fr); display:grid; gap:15px;} .category-item{width:100%;} .download-prompt{font-size:small;} }
+
+</style>
+</head>
+
+<body>
+<nav class="nav">
+  <h1 onclick="location.href='food.html'">Mora Food</h1>
+  <a href="Main.html">Home</a>
+  <a href="Restaurants.html">Restaurants</a>
+  <a href="Home Chefs.html">Home Chefs</a>
+  <a href="Offers.html">Offers</a>
+  <a href="About.html">About</a>
+  <div class="search">
+    <i class="fa fa-search"></i>
+    <input type="text" id="searchInput" placeholder="Search food..." onkeyup="liveSearch()">
+  </div>
+</nav>
+
+<aside class="sidebar">
+  <h3>Go Meal</h3>
+  <ul>
+    <li><a href="Special Menu.html">Special Menu</a></li>
+    <li><a href="Favorite.html">Favorite</a></li>
+    <li><a href="Message.html">Messages</a></li>
+    <li><a href="Order History.html">Order History</a></li>
+    <li><a href="setting.html">Settings</a></li>
+  </ul>
+  <div class="chef"><img src="Img/chefs.png" alt="chef" /></div>
+</aside>
+
+<main class="content">
+  <div class="title-p"><p>Welcome to Mora Food! Explore delicious dishes and offers.</p></div>
+  <h4>What's on your mind?</h4>
+
+  <!-- Food Items Scroll -->
+  <div class="food-scroll">
+    <div class="food-item"><img src="Img/cake.png" alt="Cake"><p>Cake <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Cake','Img/cake.png')"></i></p></div>
+    <div class="food-item"><img src="Img/sweets1.jpg" alt="Sweets"><p>Sweets <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Sweets','Img/sweets1.jpg')"></i></p></div>
+    <div class="food-item"><img src="Img/noodles.webp" alt="Noodles"><p>Noodles <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Noodles','Img/noodles.webp')"></i></p></div>
+    <div class="food-item"><img src="Img/Poori.jpg" alt="Poori"><p>Poori <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Poori','Img/Poori.jpg')"></i></p></div>
+    <div class="food-item"><img src="Img/cutlets.png" alt="Cutlets"><p>Cutlets <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Cutlets','Img/cutlets.png')"></i></p></div>
+    <div class="food-item"><img src="Img/south india.webp" alt="South India"><p>South India <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'South India','Img/south india.webp')"></i></p></div>
+    <div class="food-item"><img src="Img/North India.png" alt="North India"><p>North India <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'North India','Img/North India.png')"></i></p></div>
+    <div class="food-item"><img src="Img/veg Meals.jpg" alt="Veg Meals"><p>Veg Meals <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Veg Meals','Img/veg Meals.jpg')"></i></p></div>
+    <div class="food-item"><img src="Img/Paneer Butter masala.jpg" alt="Paneer Butter Masala"><p>Paneer Butter Masala <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Paneer Butter Masala','Img/Paneer Butter masala.jpg')"></i></p></div>
+    <div class="food-item"><img src="Img/chicken gravy.webp" alt="Chicken Gravy"><p>Chicken Gravy <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Chicken Gravy','Img/chicken gravy.webp')"></i></p></div>
+  </div>
+
+  <!-- Top Restaurants Section -->
+  <section class="category">
+    <h2>Top Restaurants</h2>
+    <div class="category-list">
+      <div class="category-item"><a href="Salem RR Biriyani.html"><img src="Img/Salem RR.jpg" alt="Salem RR Biriyani"></a><p>Salem RR Biriyani <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Salem RR Biriyani','Img/Salem RR.jpg')"></i></p><p>⭐4.5</p><p>Gandhipuram</p><p class="price">₹180</p><button class="add-btn" onclick="addToCart('Salem RR Biriyani',180)">Add to Cart</button></div>
+      <div class="category-item"><img src="Img/On rock.jpg" alt="On the Rocks"><p>On the Rocks <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'On the Rocks','Img/On rock.jpg')"></i></p><p>⭐4.7</p><p>Villankurichi, Coimbatore</p><p class="price">₹160</p><button class="add-btn" onclick="addToCart('On the Rocks',160)">Add to Cart</button></div>
+      <div class="category-item"><img src="Img/Lord of The Drinks.webp" alt="Lord of The Drinks"><p>Lord of The Drinks <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Lord of The Drinks','Img/Lord of The Drinks.webp')"></i></p><p>⭐4.8</p><p>Masakalipalayam, Coimbatore</p><p class="price">₹260</p><button class="add-btn" onclick="addToCart('Lord of The Drinks',260)">Add to Cart</button></div>
+      <div class="category-item"><img src="Img/ss.jpg" alt="Siruvaani"><p>Siruvaani <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Siruvaani','Img/ss.jpg')"></i></p><p>⭐4.7</p><p>Saravanampatti, Coimbatore</p><p class="price">₹150</p><button class="add-btn" onclick="addToCart('Siruvaani',150)">Add to Cart</button></div>
+    </div>
+  </section>
+
+  <!-- Snacks Section -->
+  <section class="category">
+    <h2>Snacks</h2>
+    <div class="category-list">
+      <div class="category-item"><img src="Img/cookies.jpg" alt="Cookies"><p>Cookies <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Cookies','Img/cookies.jpg')"></i></p><p>⭐4.5</p><p>Gandhipuram</p><p class="price">₹110</p><button class="add-btn" onclick="addToCart('Cookies',110)">Add to Cart</button></div>
+      <div class="category-item"><img src="Img/candy.jpg" alt="Candy"><p>Candy <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Candy','Img/candy.jpg')"></i></p><p>⭐4.2</p><p>Gandhipuram</p><p class="price">₹100</p><button class="add-btn" onclick="addToCart('Candy',100)">Add to Cart</button></div>
+      <div class="category-item"><img src="Img/dairy-products-milk.jpg" alt="Dairy Products"><p>Dairy Products <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Dairy Products','Img/dairy-products-milk.jpg')"></i></p><p>⭐4.0</p><p>Gandhipuram</p><p class="price">₹90</p><button class="add-btn" onclick="addToCart('Dairy Products',90)">Add to Cart</button></div>
+      <div class="category-item"><img src="Img/sweets.jpg" alt="Sweets"><p>Sweets <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Sweets','Img/sweets.jpg')"></i></p><p>⭐4.5</p><p>Gandhipuram</p><p class="price">₹120</p><button class="add-btn" onclick="addToCart('Sweets',120)">Add to Cart</button></div>
+      <div class="category-item"><img src="Img/chips.webp" alt="Chips"><p>Chips <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Chips','Img/chips.webp')"></i></p><p>⭐4.3</p><p>Gandhipuram</p><p class="price">₹90</p><button class="add-btn" onclick="addToCart('Chips',90)">Add to Cart</button></div>
+      <div class="category-item"><img src="Img/Fruit.jpg" alt="Fruit"><p>Fruit <i class="fa fa-heart favorite" onclick="toggleFavorite(this,'Fruit','Img/Fruit.jpg')"></i></p><p>⭐4.6</p><p>Gandhipuram</p><p class="price">₹150</p><button class="add-btn" onclick="addToCart('Fruit',150)">Add to Cart</button></div>
+    </div>
+  </section>
+</main>
+
+<!-- CART -->
+<div class="cart-box" id="cartBox">
+  <h3>🛒 Cart</h3>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-total">Total: ₹<span id="total">0</span></div>
+  <button id="confirmBtn">Confirm Order</button>
+</div>
+
+<h2 class="download-prompt">For a better experience, download the Mora app now</h2>
+
+<script>
+function toggleFavorite(el,name,img){
+  let favorites=JSON.parse(localStorage.getItem("favorites"))||[];
+  const index=favorites.findIndex(f=>f.img===img);
+  if(index===-1){favorites.push({name,img}); el.classList.add("active");}
+  else{favorites.splice(index,1); el.classList.remove("active");}
+  localStorage.setItem("favorites",JSON.stringify(favorites));
+}
+
+  document.addEventListener("DOMContentLoaded",()=>{
+    let favIcons=document.querySelectorAll(".favorite");
+    let favorites=JSON.parse(localStorage.getItem("favorites"))||[];
+    favIcons.forEach(el=>{
+      const name=el.parentElement.textContent.trim();
+      if(favorites.some(f=>name.includes(f.name))){el.classList.add("active");}
+    });
+  });
+
+  // Cart
+  let cart=[]; let total=0;
+  function addToCart(name,price){
+    cart.push({name,price}); total+=Number(price); renderCart(); showCart();
+  }
+  function renderCart(){
+    const cartItemsEl=document.getElementById("cartItems");
+    const totalEl=document.getElementById("total");
+    cartItemsEl.innerHTML="";
+    cart.forEach((item,idx)=>{
+      cartItemsEl.innerHTML+=`<div class="cart-item"><span>${item.name}</span><span>₹${item.price}</span></div>`;
+    });
+    totalEl.textContent=total;
+  }
+  function liveSearch() {
+  let input = document.getElementById("searchInput").value.toLowerCase();
+  let items = document.querySelectorAll(".category-item");
+
+  items.forEach(item => {
+    let text = item.textContent.toLowerCase();
+    if (text.includes(input)) {
+      item.style.display = "block";
+    } else {
+      item.style.display = "none";
+    }
+  });
+}
+  function showCart(){document.getElementById("cartBox").style.display=total>0?"block":"none";}
+  document.getElementById("confirmBtn").addEventListener("click",()=>{
+    if(cart.length===0){alert("Your cart is empty!"); return;}
+    const now=new Date(); const orderId='#'+Math.floor(Math.random()*1000000);
+    const orders=JSON.parse(localStorage.getItem("orders"))||[];
+    orders.push({orderId,date:now.toLocaleDateString(),time:now.toLocaleTimeString(),items:cart,total,status:"Ordered"});
+    localStorage.setItem("orders",JSON.stringify(orders));
+    alert("Order confirmed! Order ID: "+orderId);
+    cart=[]; total=0; renderCart(); showCart();
+  });
+  document.addEventListener("DOMContentLoaded",()=>{ renderCart(); showCart(); });
+</script>
+</body>
+</html>

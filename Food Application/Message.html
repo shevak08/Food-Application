@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages | Mora Food</title>
+
+  <!-- Font & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Irish+Grover&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: hsl(0, 0%, 98%);
+      font-family: "Alan Sans", sans-serif;
+      margin: 0;
+    }
+
+    h1 {
+      font-family: "Irish Grover", cursive;
+      font-weight: 400;
+      color: #ee670c;
+      margin-left: 20px;
+    }
+
+    /* Navigation Bar */
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background-color: white;
+      padding: 10px 30px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: black;
+      font-size: 18px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .nav a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .search {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      border: 1px solid #444;
+      border-radius: 20px;
+      padding: 5px 10px;
+    }
+
+    .search input {
+      border: none;
+      outline: none;
+      background: none;
+      font-size: 16px;
+      margin-left: 5px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 120px;
+      left: 20px;
+      bottom: 60px;
+      width: 220px;
+      background-color: #FFED26;
+      border-radius: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      padding: 20px;
+    }
+
+    .sidebar h3 {
+      margin: 0 0 20px 50px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      margin: 10px 0;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #151506;
+      font-size: 18px;
+      display: block;
+      padding: 8px 15px;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #cad315;
+    }
+
+    .chef {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .chef img {
+      width: 150px;
+      border-radius: 10px;
+    }
+
+    /* Main Content */
+    .content {
+      flex-grow: 1;
+      padding: 40px;
+      margin-top: 80px;
+      margin-left: 280px;
+      min-height: 100vh;
+    }
+
+    .content h2 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .content p {
+      font-size: 18px;
+      color: #555;
+    }
+
+    /* Row layout for both forms */
+    .form-section {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 50px;
+      margin-top: 40px;
+      flex-wrap: nowrap; /* keeps in one row */
+    }
+
+    .form-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+      padding: 25px;
+      width: 45%;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeUp 1s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+    .form-card h3 {
+      text-align: center;
+      color: #ee670c;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 16px;
+      display: inline-block;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="file"],
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      margin-bottom: 15px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #ee670c;
+      outline: none;
+    }
+
+    /* Animated Buttons */
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn {
+      background: linear-gradient(90deg, #ff6a00, #ff9900);
+      color: white;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 153, 0, 0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 153, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 153, 0, 0); }
+    }
+
+    .submit-btn:hover {
+      background: linear-gradient(90deg, #ff9900, #ff6a00);
+      transform: scale(1.05);
+    }
+
+    .cancel-btn {
+      background: linear-gradient(90deg, #ffe600, #fff45f);
+      color: #333;
+    }
+
+    .cancel-btn:hover {
+      background: linear-gradient(90deg, #fff45f, #ffe600);
+      transform: scale(1.05);
+    }
+
+    /* Responsive: Stack on smaller screens */
+    @media (max-width: 992px) {
+      .form-section {
+        flex-wrap: wrap;
+      }
+      .form-card {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      h1{ font-size:20px; margin-top:15px; } h2{ font-size:20px;} .nav{flex-wrap:wrap; gap:5px; padding:10px 5px;} .nav a{font-size:15px;margin-left:10px;} .sidebar{top:125px; left:8px;width:160px;} .content{margin-left:200px;padding:10px 20px;} .category-list{justify-content:center; gap:20px;} 
+    }
+      @media (max-width:480px){ .sidebar{display:none;} .content{margin:100px 20px; padding:20px;} .category-list{grid-template-columns:repeat(2,1fr); display:grid; gap:15px;} .category-item{width:100%;} .download-prompt{font-size:small;} }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <h1>Mora Food</h1>
+    <a href="Main.html">Home</a>
+    <a href="Restaurants.html">Restaurants</a>
+    <a href="Home Chefs.html">Home Chefs</a>
+    <a href="Offers.html">Offers</a>
+    <a href="About.html">About</a>
+    <div class="search">
+      <i class="fa fa-search"></i>
+      <input type="search" placeholder="Search ...">
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h3>Go Meal</h3>
+    <ul>
+      <li><a href="Special Menu.html">Special Menu</a></li>
+      <li><a href="Favorite.html">Favorite</a></li>
+      <li><a href="Message.html">Messages</a></li>
+      <li><a href="Order History.html">Order History</a></li>
+      <li><a href="setting.html">Settings</a></li>
+    </ul>
+    <div class="chef">
+      <img src="Img/chefs.png" alt="Chef">
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="content">
+    <h2>Messages</h2>
+    <p>Send us a thank-you message or report a complaint below:</p>
+
+    <div class="form-section">
+      <!-- Left: Thank You Form -->
+      <div class="form-card">
+        <h3>Thank You Message</h3>
+        <form action="#" method="post">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required>
+
+          <label for="tel">Phone No:</label>
+          <input type="tel" id="tel" name="tel" required>
+
+          <label for="orderid">Order ID:</label>
+          <input type="text" id="orderid" name="orderid">
+
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" rows="4" placeholder="Write your thank you message here..." required></textarea>
+
+          <button type="button" class="btn cancel-btn">Cancel</button>
+          <button type="submit" class="btn submit-btn">Submit</button>
+        </form>
+      </div>
+
+      <!-- Right: Complaint Form -->
+      <div class="form-card">
+        <h3>Complaint About Food / Delivery Issue</h3>
+        <form action="#" method="post">
+          <label for="cname">Name:</label>
+          <input type="text" id="cname" name="cname" required>
+
+          <label for="ctel">Phone No:</label>
+          <input type="tel" id="ctel" name="ctel" required>
+
+          <label for="corderid">Order ID:</label>
+          <input type="text" id="corderid" name="corderid">
+
+          <label for="complaint">Complaint:</label>
+          <textarea id="complaint" name="complaint" rows="4" placeholder="Describe your issue..." required></textarea>
+
+          <label for="file">Attachment (Damage photo):</label>
+          <input type="file" id="file" name="file" accept="image/*">
+
+          <button type="button" class="btn cancel-btn">Cancel</button>
+          <button type="submit" class="btn submit-btn">Submit</button>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

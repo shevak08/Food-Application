@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order History</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=Irish+Grover&display=swap" rel="stylesheet"/>
+<style>
+body { background:hsl(0,0%,98%); font-family:"Alan Sans",sans-serif; margin:0;}
+h1 { font-family:"Irish Grover",cursive;color:#ee670c;margin-left:20px;}
+.nav{display:flex;align-items:center;gap:20px;background:white;padding:10px 30px;position:fixed;top:0;left:0;right:0;box-shadow:0 2px 5px rgba(0,0,0,0.1);z-index:10;}
+.nav a{text-decoration:none;color:black;font-size:18px;padding:10px 15px;border-radius:5px;transition:0.3s;}
+.nav a:hover{background:#f0f0f0;}
+.sidebar{position:fixed;top:120px;left:20px;bottom:60px;width:220px;background:#FFED26;border-radius:15px;box-shadow:0 2px 8px rgba(0,0,0,0.15);padding:20px;}
+.sidebar h3{margin:0 0 20px 50px;}
+.sidebar ul{list-style:none;padding:0;margin:0;}
+.sidebar li{margin:10px 0;}
+.sidebar a{text-decoration:none;color:#151506;font-size:18px;display:block;padding:8px 15px;border-radius:10px;transition:0.3s;}
+.sidebar a:hover, .sidebar a.active{background-color:#cad315;}
+.chef{margin-top:30px;text-align:center;}
+.chef img{width:150px;border-radius:10px;}
+.content{padding:40px;margin-top:100px;margin-left:300px;max-width:900px;}
+.content h2{font-size:28px;color:#333;margin-bottom:10px;}
+.content p{font-size:18px;color:#555;margin-bottom:25px;}
+table{width:100%;border-collapse:collapse;margin-top:15px;font-size:16px;}
+th,td{border:1px solid #ddd;padding:10px 15px;text-align:center;}
+th{background-color:#ffed26;color:#333;font-weight:600;}
+tr:nth-child(even){background:#f9f9f9;}
+tr:hover{background:#f1f1f1;}
+    @media (max-width: 768px) {
+      h1{ font-size:20px; margin-top:25px; } h2{ font-size:20px;} .nav{flex-wrap:wrap; gap:5px; padding:10px 5px;} .nav a{font-size:15px;margin-left:10px;} .sidebar{top:125px; left:8px;width:160px;} .content{margin-left:200px;padding:10px 20px;} .category-list{justify-content:center; gap:20px;} 
+    }
+      @media (max-width:480px){ .sidebar{display:none;} .content{margin:100px 20px; padding:20px;} .category-list{grid-template-columns:repeat(2,1fr); display:grid; gap:15px;} .category-item{width:100%;} .download-prompt{font-size:small;} }
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <h1>Mora Food</h1>
+  <a href="Main.html">Home</a>
+  <a href="Restaurants.html">Restaurants</a>
+  <a href="Home Chefs.html">Home Chefs</a>
+  <a href="Offers.html">Offers</a>
+  <a href="About.html">About</a>
+</nav>
+
+<aside class="sidebar">
+  <h3>Go Meal</h3>
+  <ul>
+    <li><a href="Special Menu.html">Special Menu</a></li>
+    <li><a href="Favorite.html">Favorite</a></li>
+    <li><a href="Message.html">Messages</a></li>
+    <li><a href="Order History.html" class="active">Order History</a></li>
+    <li><a href="setting.html">Settings</a></li>
+  </ul>
+  <div class="chef">
+    <img src="Img/chefs.png" alt="Chef"/>
+  </div>
+</aside>
+
+<main class="content">
+  <h2>Order History</h2>
+  <p>View your last 15 orders with date, time, items, and total.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Date & Time</th>
+        <th>Items</th>
+        <th>Total</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="orderTable">
+      <!-- Orders will appear here -->
+    </tbody>
+  </table>
+</main>
+
+<script>
+window.onload = function() {
+  // Get orders from localStorage
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  // Keep only the last 15 orders
+  if (orders.length > 15) {
+    orders = orders.slice(-15);
+    localStorage.setItem("orders", JSON.stringify(orders));
+  }
+
+  // Reverse orders so last order shows first
+  orders = orders.reverse();
+
+  let table = document.getElementById("orderTable");
+
+  if (orders.length === 0) {
+    table.innerHTML = '<tr><td colspan="5">No orders yet</td></tr>';
+    return;
+  }
+
+  orders.forEach(order => {
+    // Join item names
+    let itemNames = order.items.map(i => i.name + " (₹" + i.price + ")").join(", ");
+
+    let row = `<tr>
+      <td>${order.orderId}</td>
+      <td>${order.date} ${order.time}</td>
+      <td>${itemNames}</td>
+      <td>₹${order.total}</td>
+      <td>${order.status}</td>
+    </tr>`;
+    table.innerHTML += row;
+  });
+};
+</script>
+
+
+</body>
+</html>
